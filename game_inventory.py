@@ -51,6 +51,7 @@ def print_table(inventory, order):
         left_text = max([len(headers[0]), len(str(item[0])) + 1, left_text])
         right_text = max([len(headers[1]), len(str(item[1])) + 1, right_text])
 
+    output.append("-" * (1 + left_text + right_text))
     output.append(header)
     output.append("-" * (1 + left_text + right_text))
 
@@ -65,6 +66,7 @@ def print_table(inventory, order):
 
         output.append(lft + "|" + rgt)
 
+    output.append("-" * (1 + left_text + right_text))
     print("\n".join(output))
 
 
@@ -88,8 +90,12 @@ def export_inventory(inventory, filename="export_inventory.csv"):
     try:
         with open(filename, "w") as f:
             writer = csv.writer(f)
+            new_inventory = []
             for item in inventory:
-                writer.writerow([item, inventory[item]])
+                for x in range(inventory[item]):
+                    new_inventory.append(item)    
+            writer.writerow(new_inventory)
+            
     except PermissionError:
         print(f"You don't have permission creating file '{filename}'!")
 

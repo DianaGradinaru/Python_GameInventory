@@ -77,17 +77,22 @@ def import_inventory(inventory, filename="import_inventory.csv"):
                         inventory[item] += 1
                     except KeyError:
                         inventory[item] = 1
-        display_inventory(inventory)
+        return(inventory)
             
     except FileNotFoundError:
         print(f"File '{filename}' not found!")
         
 
 
-def export_inventory(inventory, filename):
-    """Export the inventory into a CSV file."""
+def export_inventory(inventory, filename="export_inventory.csv"):
+    try:
+        with open(filename, "w") as f:
+            writer = csv.writer(f)
+            for item in inventory:
+                writer.writerow([item, inventory[item]])
+    except PermissionError:
+        print(f"You don't have permission creating file '{filename}'!")
 
-    pass
 
 
 if __name__ == "__main__":
@@ -95,4 +100,5 @@ if __name__ == "__main__":
     # print_table(
     #     {"rope": 1, "torch": 6, "battleaxe": 1, "dagger": 3, "gold coin": 1}, "desc"
     # )
-    import_inventory({}, "test_inventory.csv")
+    n = import_inventory({"rope": 1, "torch": 6, "battleaxe": 1, "dagger": 3, "gold coin": 1}, "test_inventory.csv")
+    export_inventory(n, "exp.csv")

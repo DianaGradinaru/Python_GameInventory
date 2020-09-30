@@ -71,9 +71,15 @@ def print_table(inventory, order):
 def import_inventory(inventory, filename="import_inventory.csv"):
     try:
         with open(filename) as f:
-            new_inv = dict(csv.reader(f))
-            print(new_inv)
-    except:
+            for row in csv.reader(f):
+                for item in row:
+                    try:
+                        inventory[item] += 1
+                    except KeyError:
+                        inventory[item] = 1
+        display_inventory(inventory)
+            
+    except FileNotFoundError:
         print(f"File '{filename}' not found!")
         
 
